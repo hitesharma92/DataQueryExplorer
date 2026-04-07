@@ -17,6 +17,11 @@ public sealed class TwoLevelDuplicateFinderStrategy : QueryStrategyBase
     public override async Task ExecuteAsync(StrategyExecutionContext context)
     {
         QueryExecutionRequest req = context.Request;
+
+        if (string.IsNullOrWhiteSpace(req.GroupByProperty))
+            throw new InvalidOperationException(
+                $"{nameof(QueryExecutionRequest.GroupByProperty)} is required for {nameof(TwoLevelDuplicateFinderStrategy)}.");
+
         ParentRepository = DatabaseClient.GetRepository<JObject>(req.ParentContainerName, context.DatabaseName);
         SecondRepository = DatabaseClient.GetRepository<JObject>(req.SecondContainerName!, context.DatabaseName);
 
@@ -24,7 +29,7 @@ public sealed class TwoLevelDuplicateFinderStrategy : QueryStrategyBase
         string[] childHeaders = QueryParser.ExtractColumnHeaders(req.SecondQuery!);
 
         IStorageWriter parentWriter = context.StorageFactory.CreateWriter("ParentResult");
-        parentWriter.WriteHeaders(parentHeaders);
+        parentWriter.WriteHeaders([.. parentHeaders, AppConstants.IsChildFoundColumn]);
 
         IStorageWriter childWriter = context.StorageFactory.CreateWriter("DuplicateChildResult");
         childWriter.WriteHeaders(childHeaders);
@@ -44,7 +49,6 @@ public sealed class TwoLevelDuplicateFinderStrategy : QueryStrategyBase
         {
             do
             {
-                GC.Collect();
                 (parentResults, token) = await FetchPagedAsync(ParentRepository, req.ParentQuery, token);
                 foreach (JObject parentDoc in parentResults)
                 {

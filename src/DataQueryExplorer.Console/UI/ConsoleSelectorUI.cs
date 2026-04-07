@@ -74,9 +74,8 @@ public sealed class ConsoleSelectorUI
                         System.Console.CursorVisible = true;
                         return SelectByTextInput(items, title);
                     case ConsoleKey.Escape:
-                        _logger.LogToConsole("User cancelled selection.");
-                        Environment.Exit(0);
-                        break;
+                        System.Console.CursorVisible = true;
+                        throw new OperationCanceledException("User cancelled selection.");
                 }
             } while (!confirmed);
 

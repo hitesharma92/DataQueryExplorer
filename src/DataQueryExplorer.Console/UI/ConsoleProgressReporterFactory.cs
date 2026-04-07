@@ -18,7 +18,7 @@ public sealed class ConsoleProgressReporterFactory : IProgressReporterFactory
 {
     public IProgressReporter Create(int totalCount, string label = "Processing...")
     {
-        var options = new ProgressBarOptions
+        ProgressBarOptions options = new ProgressBarOptions
         {
             ForegroundColor = ConsoleColor.Yellow,
             ForegroundColorDone = ConsoleColor.DarkGreen,

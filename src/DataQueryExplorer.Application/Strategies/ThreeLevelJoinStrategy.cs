@@ -25,10 +25,10 @@ public class ThreeLevelJoinStrategy : QueryStrategyBase
         string[] thirdHeaders = QueryParser.ExtractColumnHeaders(req.ThirdQuery!);
 
         IStorageWriter parentWriter = context.StorageFactory.CreateWriter("ParentResult");
-        parentWriter.WriteHeaders(parentHeaders);
+        parentWriter.WriteHeaders([.. parentHeaders, AppConstants.IsSecondChildFoundColumn]);
 
         IStorageWriter secondWriter = context.StorageFactory.CreateWriter("SecondLevelResult");
-        secondWriter.WriteHeaders(secondHeaders);
+        secondWriter.WriteHeaders([.. secondHeaders, AppConstants.IsThirdChildFoundColumn]);
 
         IStorageWriter thirdWriter = context.StorageFactory.CreateWriter("ThirdLevelResult");
         thirdWriter.WriteHeaders(thirdHeaders);
@@ -50,7 +50,6 @@ public class ThreeLevelJoinStrategy : QueryStrategyBase
         {
             do
             {
-                GC.Collect();
                 (parentResults, token) = await FetchPagedAsync(ParentRepository, req.ParentQuery, token);
                 foreach (JObject parentDoc in parentResults)
                 {

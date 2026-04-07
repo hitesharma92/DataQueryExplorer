@@ -72,7 +72,6 @@ public sealed class SingleContainerQueryStrategy : QueryStrategyBase
             IEnumerable<JObject> results;
             do
             {
-                GC.Collect();
                 (results, token) = await FetchPagedAsync(ParentRepository!, req.ParentQuery, token);
                 foreach (JObject doc in results)
                 {

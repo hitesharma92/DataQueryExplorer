@@ -36,7 +36,6 @@ public sealed class TwoLevelOrphanFinderStrategy : QueryStrategyBase
         {
             do
             {
-                GC.Collect();
                 (parentResults, token) = await FetchPagedAsync(ParentRepository, req.ParentQuery, token);
                 foreach (JObject parentDoc in parentResults)
                 {

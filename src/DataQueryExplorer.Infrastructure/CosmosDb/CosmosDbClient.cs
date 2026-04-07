@@ -4,7 +4,7 @@ namespace DataQueryExplorer.Infrastructure.CosmosDb;
 /// Thread-safe Cosmos DB client wrapper that implements <see cref="IDatabaseClient"/>.
 /// Register as Singleton in DI — the underlying CosmosClient SDK recommends a single instance.
 /// </summary>
-public sealed class CosmosDbClient : IDatabaseClient
+public sealed class CosmosDbClient : IDatabaseClient, IDisposable
 {
     private CosmosClient? _cosmosClient;
     private readonly IApplicationLogger _logger;
@@ -77,5 +77,11 @@ public sealed class CosmosDbClient : IDatabaseClient
         if (_cosmosClient is null)
             throw new InvalidOperationException(
                 "Database client is not initialised. Call VerifyConnectionAsync first.");
+    }
+
+    public void Dispose()
+    {
+        _cosmosClient?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

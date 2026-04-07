@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\src\DataQueryExplorer.Domain\DataQueryExplorer.Domain.csproj" />
     <ProjectReference Include="..\..\src\DataQueryExplorer.Infrastructure\DataQueryExplorer.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\DataQueryExplorer.Application\DataQueryExplorer.Application.csproj" />
+    <ProjectReference Include="..\..\src\DataQueryExplorer.Console\DataQueryExplorer.Console.csproj" />
   </ItemGroup>
 
 </Project>

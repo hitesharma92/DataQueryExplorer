@@ -7,6 +7,8 @@ global using System.Threading.Tasks;
 global using DataQueryExplorer.Application.Factories;
 global using DataQueryExplorer.Application.Services;
 global using DataQueryExplorer.Application.Strategies;
+global using DataQueryExplorer.Console;
+global using DataQueryExplorer.Console.Logging;
 global using DataQueryExplorer.Console.UI;
 global using DataQueryExplorer.Domain;
 global using DataQueryExplorer.Domain.Enums;

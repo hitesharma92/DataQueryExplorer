@@ -40,6 +40,9 @@ public sealed class ConsoleApplicationLogger : IApplicationLogger, IDisposable
 
     public void CloseLog()
     {
+        if (_disposed)
+            return;
+
         WriteToFile("=== Log Closed ===");
         lock (_lock)
         {

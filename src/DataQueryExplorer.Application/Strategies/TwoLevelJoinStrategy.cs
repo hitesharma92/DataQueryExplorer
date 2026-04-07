@@ -6,7 +6,7 @@ namespace DataQueryExplorer.Application.Strategies;
 /// Both parent and child results are written to separate worksheets.
 /// A boolean <c>IsChildFound</c> column is appended to the parent sheet.
 /// </summary>
-public class TwoLevelJoinStrategy : QueryStrategyBase
+public sealed class TwoLevelJoinStrategy : QueryStrategyBase
 {
     public TwoLevelJoinStrategy(
         IDatabaseClient databaseClient,
@@ -24,7 +24,7 @@ public class TwoLevelJoinStrategy : QueryStrategyBase
         string[] childHeaders = QueryParser.ExtractColumnHeaders(req.SecondQuery!);
 
         IStorageWriter parentWriter = context.StorageFactory.CreateWriter("ParentResult");
-        parentWriter.WriteHeaders(parentHeaders);
+        parentWriter.WriteHeaders([.. parentHeaders, AppConstants.IsChildFoundColumn]);
 
         IStorageWriter childWriter = context.StorageFactory.CreateWriter("ChildResult");
         childWriter.WriteHeaders(childHeaders);
@@ -44,7 +44,6 @@ public class TwoLevelJoinStrategy : QueryStrategyBase
         {
             do
             {
-                GC.Collect();
                 (parentResults, token) = await FetchPagedAsync(ParentRepository, req.ParentQuery, token);
                 foreach (JObject parentDoc in parentResults)
                 {

@@ -61,24 +61,28 @@ public sealed class AppRunner
         string outputFile = Path.Combine(outputFolder,
             $"{databaseName} - QueryOutput_{strategyType}_{DateTime.Now.ToFileTime()}.xlsx");
 
-        // 7. Execute
+        // 7. Execute — both strategy and factory are Transient; the caller owns disposal
         IStorageWriterFactory storageFactory = _serviceProvider.GetRequiredService<IStorageWriterFactory>();
         IQueryStrategy strategy = _strategyFactory.Create(strategyType);
 
-        StrategyExecutionContext executionContext = new StrategyExecutionContext
+        using (strategy)
+        using (storageFactory)
         {
-            Request = request,
-            DatabaseName = databaseName,
-            StorageFactory = storageFactory,
-            ProgressFactory = _progressFactory
-        };
+            StrategyExecutionContext executionContext = new StrategyExecutionContext
+            {
+                Request = request,
+                DatabaseName = databaseName,
+                StorageFactory = storageFactory,
+                ProgressFactory = _progressFactory
+            };
 
-        _logger.LogToConsole($"\nStarting execution: {strategyType}...");
-        await strategy.ExecuteAsync(executionContext);
+            _logger.LogToConsole($"\nStarting execution: {strategyType}...");
+            await strategy.ExecuteAsync(executionContext);
 
-        // 8. Save Excel output
-        _logger.LogToConsole($"\nSaving output to: {outputFile}");
-        await storageFactory.SaveAsync(outputFile);
-        _logger.LogToConsole("Done.");
+            // 8. Save Excel output — must happen before storageFactory is disposed
+            _logger.LogToConsole($"\nSaving output to: {outputFile}");
+            await storageFactory.SaveAsync(outputFile);
+            _logger.LogToConsole("Done.");
+        }
     }
 }

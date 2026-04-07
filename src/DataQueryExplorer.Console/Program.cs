@@ -1,15 +1,3 @@
-using System.Reflection;
-using DataQueryExplorer.Application.Factories;
-using DataQueryExplorer.Application.Services;
-using DataQueryExplorer.Application.Strategies;
-using DataQueryExplorer.Console;
-using DataQueryExplorer.Console.Logging;
-using DataQueryExplorer.Console.UI;
-using DataQueryExplorer.Domain.Interfaces;
-using DataQueryExplorer.Infrastructure.CosmosDb;
-using DataQueryExplorer.Infrastructure.Excel;
-using Microsoft.Extensions.DependencyInjection;
-
 // -----------------------------------------------------------------------
 // Composition root — register all services
 // -----------------------------------------------------------------------
@@ -56,6 +44,10 @@ await using (provider)
     {
         AppRunner runner = provider.GetRequiredService<AppRunner>();
         await runner.RunAsync();
+    }
+    catch (OperationCanceledException)
+    {
+        logger.LogToConsole("Application cancelled by user.");
     }
     catch (Exception ex)
     {
