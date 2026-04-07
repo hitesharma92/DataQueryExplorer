@@ -1,0 +1,12 @@
+<Solution>
+  <StartupProject Path="src/DataQueryExplorer.Console/DataQueryExplorer.Console.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/DataQueryExplorer.Application/DataQueryExplorer.Application.csproj" />
+    <Project Path="src/DataQueryExplorer.Console/DataQueryExplorer.Console.csproj" />
+    <Project Path="src/DataQueryExplorer.Domain/DataQueryExplorer.Domain.csproj" />
+    <Project Path="src/DataQueryExplorer.Infrastructure/DataQueryExplorer.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DataQueryExplorer.Tests/DataQueryExplorer.Tests.csproj" />
+  </Folder>
+</Solution>

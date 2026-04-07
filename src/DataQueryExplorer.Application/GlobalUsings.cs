@@ -1,0 +1,11 @@
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Text.RegularExpressions;
+global using System.Threading.Tasks;
+global using DataQueryExplorer.Application.Services;
+global using DataQueryExplorer.Application.Utilities;
+global using DataQueryExplorer.Domain;
+global using DataQueryExplorer.Domain.Constants;
+global using DataQueryExplorer.Domain.Interfaces;
+global using Newtonsoft.Json.Linq;

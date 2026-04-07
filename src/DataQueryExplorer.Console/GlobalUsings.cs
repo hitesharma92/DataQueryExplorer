@@ -1,0 +1,16 @@
+global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Reflection;
+global using System.Threading.Tasks;
+global using DataQueryExplorer.Application.Factories;
+global using DataQueryExplorer.Application.Services;
+global using DataQueryExplorer.Application.Strategies;
+global using DataQueryExplorer.Console.UI;
+global using DataQueryExplorer.Domain;
+global using DataQueryExplorer.Domain.Enums;
+global using DataQueryExplorer.Domain.Interfaces;
+global using DataQueryExplorer.Infrastructure.CosmosDb;
+global using DataQueryExplorer.Infrastructure.Excel;
+global using Microsoft.Extensions.DependencyInjection;
